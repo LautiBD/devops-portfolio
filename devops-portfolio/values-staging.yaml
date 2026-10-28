@@ -16,6 +16,10 @@ backend:
       cpu: "200m"
 frontend:
   replicas: 1
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
   resources:
     requests:
       memory: "32Mi"
@@ -36,5 +40,3 @@ ingress:
   host: staging.devops-portfolio.local
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-hpa:
-  enabled: false

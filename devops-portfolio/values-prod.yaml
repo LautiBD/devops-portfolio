@@ -2,7 +2,7 @@ global:
   environment: production
   namespace: production
 backend:
-  replicas: 3
+  replicas: 2
   image:
     repository: LautiBD/devops-portfolio
     tag: latest
@@ -16,6 +16,10 @@ backend:
       cpu: "500m"
 frontend:
   replicas: 2
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
   resources:
     requests:
       memory: "64Mi"
@@ -36,8 +40,3 @@ ingress:
   host: devops-portfolio.com
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-hpa:
-  enabled: true
-  minReplicas: 3
-  maxReplicas: 6
-  targetCPUUtilizationPercentage: 70
