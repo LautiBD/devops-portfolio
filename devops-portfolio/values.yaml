@@ -1,0 +1,62 @@
+global:
+  namespace: devops-portfolio
+  environment: production
+
+postgres:
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+  credentials:
+    database: notesdb
+    user: postgres
+    password: devops123
+  storage:
+    size: 1Gi
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+backend:
+  image:
+    repository: LautiBD/devops-portfolio
+    tag: "latest"
+    pullPolicy: Always
+  replicas: 2
+  port: 5000
+  env:
+    APP_ENV: production
+    APP_VERSION: "1.0.0"
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+frontend:
+  image:
+    repository: nginx
+    tag: "alpine"
+    pullPolicy: IfNotPresent
+  replicas: 2
+  port: 80
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "25m"
+    limits:
+      memory: "64Mi"
+      cpu: "100m"
+
+ingress:
+  enabled: true
+  className: nginx
+  host: devops-portfolio.com
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /

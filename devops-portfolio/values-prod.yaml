@@ -1,0 +1,42 @@
+global:
+  environment: production
+  namespace: production
+backend:
+  replicas: 2
+  image:
+    repository: LautiBD/devops-portfolio
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+frontend:
+  replicas: 2
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+postgres:
+  storage:
+    size: 5Gi
+  credentials:
+    database: notesdb_prod
+    user: postgres
+    password: "prod-super-secure-password-2026"
+ingress:
+  enabled: true
+  className: nginx
+  host: devops-portfolio.com
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
